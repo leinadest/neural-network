@@ -1,0 +1,63 @@
+# Python bytecode files
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.pyo
+
+# Virtual environment directories
+venv/
+ENV/
+env/
+.venv/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# VS Code settings (if using Visual Studio Code)
+.vscode/
+
+# PyCharm settings (if using PyCharm)
+.idea/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Testing and coverage
+.coverage
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Dependency directories (if using pipenv or poetry)
+Pipfile.lock
+poetry.lock
+Pipfile
+env/
+
+# MyPy type checker
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Sphinx documentation
+docs/_build/
+build/
+
+# Flask and Django app files
+*.log
+instance/
+*.sqlite3
+
+# macOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+
+# PyInstalle
