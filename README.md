@@ -239,6 +239,10 @@ Loss: 0.2492
 
 ## Math
 
+### Example Neural Network
+
+<img src="https://i.imgur.com/SxrIzwZ.png" width="512">
+
 ### Definitions
 
 $$
@@ -266,119 +270,140 @@ $$
 
 $$
 \begin{align}
-    &a^{[0]}=A&(m\times n)
+    a^{[0]}=A&(m\times n)
 \end{align}
 $$
-
----
 
 #### Hidden Layers:
 
 1. Calculate the layer's pre-activation output
-   $$
-   \begin{align}
-       &z^{[l]}=a^{[l-1]}W^{[l]}+b^{[l]}&(m\times 64)\\
-   \end{align}
-   $$
+
+$$
+\begin{align}
+    z^{[l]}=a^{[l-1]}W^{[l]}+b^{[l]}&(m\times 64)
+\end{align}
+$$
+
 2. Apply the activation function
-   $$
-   \begin{align}
-       &a^{[l]}=ReLU(z^{[l]})&(m\times 64)\\
-   \end{align}
-   $$
+
+$$
+\begin{align}
+    a^{[l]}=ReLU(z^{[l]})&(m\times 64)
+\end{align}
+$$
+
 3. Propagate $a^{[l]}$ to the next layer
 
----
+<br/>
 
 #### Output Layer:
 
 1. Calculate the layer's pre-activation output
-   $$
-   \begin{align}
-       &z^{[L-1]}=a^{[L-2]}W^{[L-1]}+b^{[L-1]}&(m\times 10)\\
-   \end{align}
-   $$
+   
+$$
+\begin{align}
+    z^{[L-1]}=a^{[L-2]}W^{[L-1]}+b^{[L-1]}&(m\times 10)
+\end{align}
+$$
+   
 2. Apply the activation function
-   $$
-   \begin{align}
-       &a^{[L-1]}=Softmax(z^{[L-1]}_i)&(m\times 10)\\
-   \end{align}
-   $$
-3. Calculate the loss
-   $$
-   \begin{align}
-       &L=-\frac{1}{m}\sum^m_{i=0}\sum^{10}_{j=0}y_{i,j}log(a^{[L-1]}_{i,j})&(1\times 1)
-   \end{align}
-   $$
 
----
+$$
+\begin{align}
+    a^{[L-1]}=Softmax(z^{[L-1]}_i)&(m\times 10)
+\end{align}
+$$
+
+3. Calculate the loss (optional for logging; not needed for error term calculation when cross-entropy error is differentiated with softmax)
+
+```math
+\begin{align}
+   L=-\frac{1}{m} \sum^m_{i=0} \sum^{10}_{j=0} y_{i,j}log(a^{[L-1]}_{i,j}) & (1\times 1)
+\end{align}
+```
 
 ### Backward Propagation
 
 #### Output Layer:
 
 1. Calculate the error term
-   $$
-   \begin{align}
-       &\delta^{[L-1]}=a^{[L-1]}-y&(m\times 10)\\
-   \end{align}
-   $$
-2. Calculate the loss gradient with respect to the layer's weights
-   $$
-   \begin{align}
-       &\frac{dJ}{dW^{[L-1]}}=a^{[L-2]T}\delta^{[L-1]}&(10\times 10)\\
-   \end{align}
-   $$
-3. The loss gradient with respect to the layer's biases equals the error term
-   $$
-   \begin{align}
-       &\frac{dJ}{db^{[L-1]}}=\delta^{[L-1]}&(m\times 10)\\
-   \end{align}
-   $$
-4. Update the weights by gradient descent with L2 regularization (the gradient is already summed across the minibatch, only need to divide by m to average it)
-   $$
-   \begin{align}
-       &\Delta W^{[L-1]}=-\frac{\alpha}{m}\frac{dJ}{dW^{[L-1]}}+\lambda W^{[L-1]}&(10\times 10)\\
-   \end{align}
-   $$
-5. Update the biases by averaging the gradient across the minibatch before descent
-   $$
-   \begin{align}
-       &\Delta b^{[L-1]}=-\frac{\alpha}{m}\sum^m_{i=0}\frac{dJ}{db^{[L-1]}_i}&(1\times 10)
-   \end{align}
-   $$
 
----
+$$
+\begin{align}
+    \delta^{[L-1]}=a^{[L-1]}-y&(m\times 10)
+\end{align}
+$$
+
+2. Calculate the loss gradient with respect to the layer's weights
+
+$$
+\begin{align}
+    \frac{dJ}{dW^{[L-1]}}=a^{[L-2]T}\delta^{[L-1]}&(10\times 10)
+\end{align}
+$$
+
+3. The loss gradient with respect to the layer's biases equals the error term
+
+$$
+\begin{align}
+    \frac{dJ}{db^{[L-1]}}=\delta^{[L-1]}&(m\times 10)
+\end{align}
+$$
+
+4. Update the weights by gradient descent with L2 regularization (the gradient is already summed across the minibatch, only need to divide by m to average it)
+
+$$
+\begin{align}
+    \Delta W^{[L-1]}=-\frac{\alpha}{m}\frac{dJ}{dW^{[L-1]}}+\lambda W^{[L-1]}&(10\times 10)
+\end{align}
+$$
+
+5. Update the biases by averaging the gradient across the minibatch before descent
+
+$$
+\begin{align}
+    \Delta b^{[L-1]}=-\frac{\alpha}{m}\sum^m_{i=0}\frac{dJ}{db^{[L-1]}_i}&(1\times 10)
+\end{align}
+$$
 
 #### Hidden Layers:
 
 1. Calculate the error term
-   $$
-   \begin{align}
-       &\delta^{[l]}=\delta^{[l+1]}W^{[l+1]T}\odot ReLU'(z^{[l]})&(m\times 64)\\
-   \end{align}
-   $$
+
+$$
+\begin{align}
+    \delta^{[l]}=\delta^{[l+1]}W^{[l+1]T}\odot ReLU'(z^{[l]})&(m\times 64)
+\end{align}
+$$
+
 2. Calculate the loss gradient with respect to the layer's weights
-   $$
-   \begin{align}
-       &\frac{dJ}{dW^{[l]}}=a^{[l-1]T}\delta^{[l]}&(64\times 64)\\
-   \end{align}
-   $$
+
+$$
+\begin{align}
+    \frac{dJ}{dW^{[l]}}=a^{[l-1]T}\delta^{[l]}&(64\times 64)
+\end{align}
+$$
+
 3. The loss gradient with respect to the layer's biases equals the error term
-   $$
-   \begin{align}
-       &\frac{dJ}{db^{[l]}}=\delta^{[l]}&(m\times 64)\\
-   \end{align}
-   $$
+
+$$
+\begin{align}
+    \frac{dJ}{db^{[l]}}=\delta^{[l]}&(m\times 64)
+\end{align}
+$$
+
 4. Update the weights by gradient descent with L2 regularization (the gradient is already summed across the minibatch, only need to divide by m to average it)
-   $$
-   \begin{align}
-       &\Delta W^{[l]}=-\frac{\alpha}{m}\frac{dJ}{dW^{[l]}}+\lambda W^{[l]}&(64\times 64)\\
-   \end{align}
-   $$
+
+$$
+\begin{align}
+    \Delta W^{[l]}=-\frac{\alpha}{m}\frac{dJ}{dW^{[l]}}+\lambda W^{[l]}&(64\times 64)
+\end{align}
+$$
+
 5. Update the biases by averaging the gradient across the minibatch before descent
-   $$
-   \begin{align}
-       &\Delta b^{[l]}=-\frac{\alpha}{m}\sum^m_{i=0}\frac{dJ}{db^{[l]}_i}&(1\times 64)
-   \end{align}
-   $$
+
+$$
+\begin{align}
+    \Delta b^{[l]}=-\frac{\alpha}{m}\sum^m_{i=0}\frac{dJ}{db^{[l]}_i}&(1\times 64)
+\end{align}
+$$
