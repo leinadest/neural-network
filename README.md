@@ -28,7 +28,9 @@ pipenv install
 
 ## Usage
 
-1. Train the model \
+1. Run `pipenv shell` to spawn a shell within the virtual environment
+
+2. Train the model \
    a. with default hyperparameters and save to models/model.json
 
    ```bash
@@ -46,7 +48,7 @@ pipenv install
        --model models/model.json
    ```
 
-2. Evaluate the model \
+3. Evaluate the model \
    a. from models/model.json
 
    ```bash
@@ -59,7 +61,7 @@ pipenv install
    python main.py evaluate --model models/model.json
    ```
 
-3. Make predictions \
+4. Make predictions \
    a. using models/model.json to output predictions to predictions.csv
    ```bash
    python main.py predict
