@@ -2,8 +2,13 @@ import numpy as np
 import gzip
 
 def load_mnist_images(filename):
+    """
+    Load the images from the MNIST dataset.
+
+    Parameters:
+    filename (str): The path to the MNIST images file.
+    """
     with gzip.open(filename, 'rb') as f:
-        # Read the header information
         f.read(16)  # Skip the magic number and dimensions
         # Read the image data
         images = np.frombuffer(f.read(), dtype=np.uint8).reshape(-1, 28, 28)
@@ -12,8 +17,13 @@ def load_mnist_images(filename):
     return images
 
 def load_mnist_labels(filename):
+    """
+    Load the labels from the MNIST dataset.
+
+    Parameters:
+    filename (str): The path to the MNIST labels file.
+    """
     with gzip.open(filename, 'rb') as f:
-        # Read the header information
         f.read(8)  # Skip the magic number and number of labels
         labels = np.frombuffer(f.read(), dtype=np.uint8)
     return labels
